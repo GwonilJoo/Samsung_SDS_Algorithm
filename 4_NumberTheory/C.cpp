@@ -1,17 +1,23 @@
 // 3955 캔디 분배
+/*
+확장 유클리드 문제!
+잘 익혀두면 문제 개꿀~
+*/
 
 #include<iostream>
+#include<cmath>
 using namespace std;
 
-// ax+by=c -> as+bt=r 을 만족하는 s,t,r 조합 찾기(r이 gcd(a,b)일때)
+long long A, B, D, s, t, r;
 
-void eGcd(int a, int b){
-  int s0 = 1, t0 = 0, r0 = a;
-  int s1 = 0, t1 = 1, r1 = b;
+void eGcd(long long a, long long b){
+  // ax+by=c -> as+bt=r 을 만족하는 s,t,r 조합 찾기(r이 gcd(a,b)일때)
+  long long s0 = 1, t0 = 0, r0 = a;
+  long long s1 = 0, t1 = 1, r1 = b;
   
-  int temp;
+  long long temp;
   while(r1 != 0){
-    int q = r0 / r1;
+    long long q = r0 / r1;
     
     temp = r0 - q * r1; // 새로운 r
     r0 = r1;
@@ -26,12 +32,55 @@ void eGcd(int a, int b){
     t1 = temp;
   }
   
-  cout << s0 << " " << t0 << " " << r0 << endl;
+  s = s0;
+  t = t0;
+  r = r0;
+  //cout << s0 << " " << t0 << " " << r0 << endl;
+}
+
+long long gcd(long a, long b){
+  while(b != 0){
+    long long r = a%b;
+    a = b;
+    b = r;
+  }
+  
+  return a;
+}
+
+void solution(){
+/*
+  //eGcd 의 r이 D이다.
+  
+  long long D = gcd(A, B);
+  
+  if(D != 1){ // C=1이므로 D=1이 아니면 error
+    cout << "IMPOSSIBLE\n";
+    return; 
+  }
+*/
+
+  eGcd(A,B);
+  if(r != 1){ 
+    cout << "IMPOSSIBLE\n";
+    return; 
+  }
+  
+  long long tmp1 = (long long)ceil((double)t/(double)A) - 1;
+  long long tmp2 = (long long)ceil((double)(-1*s)/(double)B) - 1; 
+  long long k = min(tmp1, tmp2);
+  long long y = t-A*k;
+
+  if(y <= 1e9){
+    cout << y << "\n";
+  }
+  else{
+    cout << "IMPOSSIBLE\n";
+    return; 
+  }
 }
 
 int main(){
-  eGcd(71,240);
-  
   // x: 인당 나눠줄 사람의 수
   // y: 사탕 봉지의 수
   // A * x + 1 = B * y
@@ -66,4 +115,10 @@ int main(){
   // 그렇게 구한 y는 가장 작은 y값.
   // 구한 y값이 1e9보다 작거나 같으면 가능한 답. 아니면 불가능한 답
   
+  int T;
+  cin >> T;
+  for(int i=0;i<T;i++){
+    cin >> A >> B;
+    solution();
+  }
 }
