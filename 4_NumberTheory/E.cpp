@@ -13,7 +13,8 @@ vector<int> v;
 void prime_num(){
   for(int i=2;i<=MAX;i++){
     if(!checked[i]){
-      v.push_back(i);
+      if(i%2 == 1)
+        v.push_back(i);
       for(int j=i+i;j<=MAX;j+=i){
         if(!checked[j]){
           checked[j] = true;
@@ -21,11 +22,10 @@ void prime_num(){
       }
     }
   }
-  
-  cout << "pritme\n";
 }
 
 int main(){
+  ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
   prime_num();
   
   while(true){

@@ -1,5 +1,5 @@
 // 2960 에라토스테네스의 체
-
+/*강사님*/
 #include<iostream>
 using namespace std;
 
