@@ -35,7 +35,7 @@ int dfs(int parent, int cur){
     else{
       int tmp;
       tmp = dfs(cur, next);
-      if(tmp > order[cur]){
+      if(tmp > order[cur]){ // 같으면 안된다! 단절점과 다른점. 
         edge_list.push_back({min(next,cur), max(next,cur)});
       }
       
