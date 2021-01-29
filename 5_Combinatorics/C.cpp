@@ -1,35 +1,21 @@
-// 11051 이항계수2
+// 1010 다리 놓기
 
-#include<iostream>
-using namespace std;
+#include<cstdio>
 
-#define MAX 30
-
-long long D[MAX+1][MAX+1];
+int n,m,T;
+int D[31][31];
 
 int main(){
-  for(int i=0;i<30;i++){
-    D[i][0] = 1;
+  for(int i=1;i<=30;i++){
+    D[i][0] = D[i][i] = 1;
     for(int j=1;j<i;j++){
-      D[i][j] = (D[i-1][j-1] + D[i-1][j]);
+      D[i][j] = D[i-1][j-1] + D[i-1][j];
     }
-    D[i][i] = 1;
   }
   
-  int T, N, M;
-  cin >> T;
-  
+  scanf("%d", &T);
   for(int i=0;i<T;i++){
-    cin >> N >> M;
-    cout << D[N][M] << "\n";
+    scanf("%d%d", &n, &m);
+    printf("%d\n", D[m][n]);
   }
-  
-  
-  // k == 0 -> 1
-  // n == k -> 1
-  // D[n][k] = D[n-1][k-1] + D[n-1][k]
-  
-  
-  
-  
 }

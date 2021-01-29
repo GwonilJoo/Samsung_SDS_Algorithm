@@ -7,16 +7,23 @@
 최소로 하는 것이 무엇인지 찾기
 A와 B 또한 각각 크게 나누어서 최소가 되는 것을 찾는다.
 
+첫번째 방법
 재귀적으로 호출!
 
 그런데 재귀적으로 호출한다면 시간초과 발생
 -> 메모이제이션으로 해결하기!
 
+두번째 방법
+길이별로 구한 다음 dp 저장 -> 더 빠름
+
+
+<tip>
 dp 하면서 메모리 초과 문제는 트릭을 사용해서 푸는 것. 필요없는 것들 저장 안한다든지 등등....
 이건 아직 안가르쳐주심.
 */
 
 #include<cstdio>
+#include<cstring>
 
 struct Info{
   int r, c;
@@ -39,7 +46,7 @@ int calc(int s, int e){
   
   // 적절한 처리를 해서 계산량 줄이기
   // calc(s,e)를 처음으로 계산한 적이 있으면, 그때 계산했던 결과를 사용
-  if(dp[s][e] != 0){
+  if(dp[s][e] != -1){
     return dp[s][e];
   }
   
@@ -47,10 +54,10 @@ int calc(int s, int e){
   // 부분으로 다 나눠서 괜찮은 값을 구하기
   int mn = -1;
   for(int mid = s ; mid < e ; mid++){
-    if(dp[s][mid] == 0) dp[s][mid] = calc(s,mid);
-    if(dp[mid+1][e] == 0) dp[mid+1][e] = calc(mid+1, e);
+    //if(dp[s][mid] == 0) dp[s][mid] = calc(s,mid);
+    //if(dp[mid+1][e] == 0) dp[mid+1][e] = calc(mid+1, e);
     
-    int tmp = dp[s][mid] + dp[mid+1][e] + mat[s].r * mat[mid].c * mat[e].c; // 그림 그려보자
+    int tmp = calc(s,mid) + calc(mid+1, e) + mat[s].r * mat[mid].c * mat[e].c; // 그림 그려보자
     if(mn == -1 || tmp < mn) mn = tmp;
   }
   
@@ -60,11 +67,30 @@ int calc(int s, int e){
   return mn;
 }
 
+void solution2(){
+  int len;
+  for(len=2; len<=N ; len++){
+    for(int s=1;s+len-1 <= N; s++){
+      int e = s+len-1;
+      // dp[s][e] 값을 구하고 싶음
+      int mn = -1;
+      for(int mid = s; mid <= e-1; mid++){
+        int tmp = dp[s][mid] + dp[mid+1][e] + mat[s].r * mat[mid].c * mat[e].c;
+        if(mn == -1 || tmp < mn) mn = tmp;
+      }
+      dp[s][e] = mn;
+    }
+  }
+}
+
 int main(){
+  //memset(dp, 0xff, sizeof(dp)); // dp 배열을 -1로 초기화
   scanf("%d", &N);
   for(int i=1;i<=N;i++){
     scanf("%d%d", &mat[i].r, &mat[i].c);
   }
-  printf("%d\n", calc(1,N));
+  //printf("%d\n", calc(1,N));
+  solution2();
+  printf("%d\n", dp[1][N]);
 }
 
